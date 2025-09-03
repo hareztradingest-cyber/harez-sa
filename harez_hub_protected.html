@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>لوحة حارِز — اختصارات سطح المكتب</title>
+  <style>
+    :root { --bg:#0b1220; --card:#111827; --text:#e5e7eb; --muted:#94a3b8; --border:#1f2937; --hover:#334155; }
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Tahoma,Arial; background:var(--bg); color:var(--text); margin:0; padding:24px;}
+    .container{max-width:1100px;margin:0 auto}
+    h1{font-size:28px;margin:0 0 8px}
+    h2{font-size:20px;margin:0 0 12px}
+    .lead{color:var(--muted);margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    .card{background:var(--card);border:1px solid var(--border);padding:16px;border-radius:16px;margin-bottom:16px}
+    a.link{display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:inherit;padding:12px;border-radius:12px;border:1px solid var(--border)}
+    a.link:hover{border-color:var(--hover)}
+    input,textarea,button{width:100%;background:#0b1325;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:10px}
+    button{cursor:pointer}
+    .small{font-size:12px;color:var(--muted)}
+    .row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}
+  </style>
+</head>
+<body>
+<script>
+  // كلمة المرور
+  const PASSWORD = "harez2025";
+
+  // طلب كلمة السر من المستخدم
+  const userPass = prompt("📌 أدخل كلمة السر للدخول:");
+
+  // التحقق
+  if (userPass !== PASSWORD) {
+    document.body.innerHTML = "<h1 style='color:red;text-align:center;margin-top:20%'>❌ كلمة المرور غير صحيحة</h1>";
+    throw new Error("Wrong password");
+  }
+</script>
+  <div class="container">
+    <header>
+      <h1>لوحة حارِز — اختصارات العمل</h1>
+      <div class="lead">اختصار سريع لروابط وأدوات العمل اليومية. عدّل الروابط براحتك.</div>
+    </header>
+
+    <section class="card">
+      <h2>روابط سريعة</h2>
+      <div class="grid">
+        <a class="link" href="https://www.notion.so/" target="_blank" rel="noopener">نوشن (صفحة عمليات حارِز)</a>
+        <a class="link" href="https://x.com/harez_sa" target="_blank" rel="noopener">X (harez_sa)</a>
+        <a class="link" href="https://www.instagram.com/harez_sa/" target="_blank" rel="noopener">إنستغرام</a>
+        <a class="link" href="https://www.tiktok.com/@harez_sa" target="_blank" rel="noopener">تيك توك</a>
+        <a class="link" href="https://salla.sa/" target="_blank" rel="noopener">لوحة سِلّة</a>
+        <a class="link" href="https://business.whatsapp.com/" target="_blank" rel="noopener">واتساب للأعمال</a>
+        <a class="link" href="https://vld.smsaexpress.com/" target="_blank" rel="noopener">تتبّع سمسا</a>
+        <a class="link" href="https://harez-box.com" target="_blank" rel="noopener">موقع حارِز</a>
+      </div>
+      <p class="small">تقدر تغيّر الروابط بفتح الملف في المفكرة وتعديل العناوين.</p>
+    </section>
+
+    <section class="card">
+      <h2>أداة إنشاء رابط واتساب</h2>
+      <div class="row" style="grid-template-columns:1fr 160px">
+        <input id="waPhone" placeholder="رقم الجوال مع رمز الدولة مثل: +9665xxxxxxxx">
+        <button id="waBtn">فتح واتساب</button>
+      </div>
+      <div style="height:8px"></div>
+      <input id="waMsg" placeholder="نص الرسالة (اختياري)">
+      <p class="small">يفتح https://wa.me/ برقمك ونصك الجاهز للعميل.</p>
+    </section>
+
+    <section class="card">
+      <h2>بحث خرائط Google سريع</h2>
+      <div class="row" style="grid-template-columns:1fr 160px">
+        <input id="mapsQ" placeholder="اكتب عنوان العميل / الحي / الإحداثيات">
+        <button id="mapsBtn">افتح الخرائط</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>ملاحظات سريعة (تُحفظ على هذا الجهاز)</h2>
+      <textarea id="notes" rows="6" placeholder="اكتب أي ملاحظات سريعة..."></textarea>
+      <p class="small">الملاحظات تُحفظ تلقائيًا في المتصفح (localStorage) ولن تنتقل لأجهزة أخرى.</p>
+    </section>
+
+    <footer class="small">إصدار 1.0 — بإمكانك تغيير الألوان والنصوص داخل الملف.</footer>
+  </div>
+
+  <script>
+    // WhatsApp builder
+    function buildWa(){
+      const p = document.getElementById('waPhone').value.trim().replace(/\s+/g,'');
+      const m = encodeURIComponent(document.getElementById('waMsg').value.trim());
+      if(!p){ alert('أدخل رقم الجوال'); return; }
+      const phone = p.replace(/^\+/, '');
+      const url = 'https://wa.me/' + phone + (m ? ('?text=' + m) : '');
+      window.open(url, '_blank', 'noopener');
+    }
+    document.getElementById('waBtn').addEventListener('click', buildWa);
+
+    // Maps quick search
+    document.getElementById('mapsBtn').addEventListener('click', function(){
+      const q = encodeURIComponent(document.getElementById('mapsQ').value.trim());
+      if(!q){ alert('اكتب شي للبحث'); return; }
+      window.open('https://www.google.com/maps/search/?api=1&query=' + q, '_blank', 'noopener');
+    });
+
+    // Notes autosave
+    const key = 'harez_hub_notes_v1';
+    const area = document.getElementById('notes');
+    try { area.value = localStorage.getItem(key) || ''; } catch(e){}
+    area.addEventListener('input', () => {
+      try { localStorage.setItem(key, area.value); } catch(e){}
+    });
+  </script>
+</body>
+</html>
